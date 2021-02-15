@@ -11,7 +11,7 @@ client=amino.Client()
 client.login(email,password)
 print("logged in...")
 subclient = amino.SubClient(comId='195512655', profile=client.profile)
-print("joined")
+print("joined...")
 #chats = subclient.get_public_chat_threads(size=100)
 #########################################################################################
 def countdown(t): 
@@ -41,18 +41,27 @@ welc ='''
 
 💀Have fun💀
 '''
-name=subclient.get_all_users(start = 0,size=300)
-data = name.json
-time1 = "2021-02-13T14:32:10Z"
+
 while True:
-    countdown(6)
+    f = open("lastuser.txt","r")
+    users = [uid[:-1] for uid in f.readlines()]
+    f.close()
+
+    name=subclient.get_all_users(start = 0,size=10)
+    data = name.json
     for person in data['userProfileList']:
-        if person['modifiedTime'] > time1:
-            print("we found one")
+        if person['uid'] not in users:
+            time.sleep(5)
             subclient.comment(message=welc, userId= person['uid'])
-            print("msg has been sent")
-            time1 = person['modifiedTime']
-        
+            continue
+        break
+    if users[0] != data['userProfileList'][0]['uid']:
+        f = open("lastuser.txt","w")
+        for person in data['userProfileList']:
+            f.write(person['uid']+'\n')
+        f.close()
+    time.sleep(1750)
+
 #subclient.comment(message="hello", userId = "ad930284-3524-4a1e-be52-eb9a8ccc6f85")
 #print(name.json)
 #print(name.userId)
