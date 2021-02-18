@@ -52,7 +52,8 @@ while True:
     for person in data['userProfileList']:
         if person['uid'] not in users:
             time.sleep(5)
-            subclient.comment(message=welc, userId= person['uid'])
+            #subclient.comment(message=welc, userId= person['uid'])
+            print("working")
             continue
         break
     if users[0] != data['userProfileList'][0]['uid']:
